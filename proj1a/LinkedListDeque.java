@@ -33,6 +33,14 @@ public class LinkedListDeque<T> {
     public void addLast(T x) {
         size += 1;
         sentinel.prev = new IntNode(x, sentinel, sentinel.prev);
+        IntNode p = sentinel;
+        int i=0;
+        while (i<size-1) {
+            p = p.next;
+            i += 1;
+        }
+        p.next = sentinel.prev;
+        sentinel.prev.prev = p;
     }
 
     public boolean isEmpty() {
@@ -48,10 +56,14 @@ public class LinkedListDeque<T> {
 
     public void printDeque() {
         IntNode p = sentinel;
-        while (p.next != null) {
+        int i = 0;
+        while (i < size) {
             p = p.next;
-            System.out.print(p.item + " ");
+            System.out.print(p.item);
+            System.out.print(" ");
+            i += 1;
         }
+        System.out.println();
 
     }
 
@@ -75,4 +87,36 @@ public class LinkedListDeque<T> {
 
         return null;
     }
+
+    public T get(int index) {
+        if (index > (size - 1) || index < 0) {
+            return null;
+        }
+        int i=0;
+        IntNode p = sentinel;
+        p = p.next;
+        while (i<index){
+            p = p.next;
+            i += 1;
+        }
+        return p.item;
+    }
+
+    public T getRecursive(int index) {
+        if (index > (size - 1) || index < 0) {
+            return null;
+        }
+        IntNode p = getRecursiveNode(sentinel.next, index,0);
+        return p.item;
+
+    }
+
+    private IntNode getRecursiveNode(IntNode n, int index, int pos) {
+        if (index == pos) {
+            return n;
+        }
+        return getRecursiveNode(n.next, index, pos+1);
+    }
+
+
 }
